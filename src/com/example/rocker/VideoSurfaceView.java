@@ -72,7 +72,7 @@ public class VideoSurfaceView extends SurfaceView implements Callback {
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		mScreenWidth = displayMetrics.widthPixels;
 		mScreenHeight = displayMetrics.heightPixels;
-		this.setKeepScreenOn(true);// ±£³ÖÆÁÄ»³£ÁÁ
+		this.setKeepScreenOn(true);// ä¿æŒå±å¹•å¸¸äº®
 	}
 
 	class DrawVideo extends Thread {
@@ -93,10 +93,10 @@ public class VideoSurfaceView extends SurfaceView implements Callback {
 			paint.setTextSize(20);
 			paint.setStrokeWidth(1);
 
-			int bufSize = 512 * 1024; // ÊÓÆµÍ¼Æ¬»º³å
+			int bufSize = 512 * 1024; // è§†é¢‘å›¾ç‰‡ç¼“å†²
 			byte[] jpg_buf = new byte[bufSize]; // buffer to read jpg
 
-			int readSize = 4096; // Ã¿´Î×î´ó»ñÈ¡µÄÁ÷
+			int readSize = 4096; // æ¯æ¬¡æœ€å¤§è·å–çš„æµ
 			byte[] buffer = new byte[readSize]; // buffer to read stream
 
 			while (isThreadRunning) {
@@ -105,11 +105,11 @@ public class VideoSurfaceView extends SurfaceView implements Callback {
 
 				try {
 					url = new URL(string);
-					URLConnection = (HttpURLConnection) url.openConnection(); // Ê¹ÓÃHTTPURLConnetion´ò¿ªÁ¬½Ó
+					URLConnection = (HttpURLConnection) url.openConnection(); // ä½¿ç”¨HTTPURLConnetionæ‰“å¼€è¿æ¥
 
 					int read = 0;
 					int status = 0;
-					int jpg_count = 0; // jpgÊı¾İÏÂ±ê
+					int jpg_count = 0; // jpgæ•°æ®ä¸‹æ ‡
 
 					while (isThreadRunning) {
 						read = URLConnection.getInputStream().read(buffer, 0, readSize);
@@ -236,9 +236,9 @@ public class VideoSurfaceView extends SurfaceView implements Callback {
 									jpg_buf[jpg_count++] = (byte) buffer[i];
 									if (buffer[i] == (byte) 0xD9) {
 										status = 0;
-										// jpg½ÓÊÕÍê³É
+										// jpgæ¥æ”¶å®Œæˆ
 										canvas = surfaceHolder.lockCanvas();
-										// ÏÔÊ¾Í¼Ïñ
+										// æ˜¾ç¤ºå›¾åƒ
 										if (null != canvas) {
 											canvas.drawColor(Color.BLACK);
 
@@ -251,7 +251,7 @@ public class VideoSurfaceView extends SurfaceView implements Callback {
 
 											canvas.drawBitmap(mBitmap, 0, 0, null);
 
-											surfaceHolder.unlockCanvasAndPost(canvas);// »­ÍêÒ»¸±Í¼Ïñ£¬½âËø»­²¼
+											surfaceHolder.unlockCanvasAndPost(canvas);// ç”»å®Œä¸€å‰¯å›¾åƒï¼Œè§£é”ç”»å¸ƒ
 										}
 
 										Log.d("MySurface", "canvas null");

@@ -17,19 +17,19 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
-//MySurfaceView¿ÉÒÔ²»ÓÃonDraw-->lockCanvas unlockCanvasAndPost
-//Callback-->»Øµ÷½Ó¿Ú£¬ÊµÏÖ¸Ã½Ó¿Ú£¬¾Í¿ÉÒÔÔÚ¶ÔÓ¦µÄ×´Ì¬ÖĞÊµÏÖÌØÊâ·½·¨
-//Runnable-->Ïß³Ì½Ó¿Ú£¬ÊµÏÖ¸Ã½Ó¿Ú£¬¾Í¿ÉÒÔÊµÏÖÏß³ÌµÄ·½·¨
+//MySurfaceViewå¯ä»¥ä¸ç”¨onDraw-->lockCanvas unlockCanvasAndPost
+//Callback-->å›è°ƒæ¥å£ï¼Œå®ç°è¯¥æ¥å£ï¼Œå°±å¯ä»¥åœ¨å¯¹åº”çš„çŠ¶æ€ä¸­å®ç°ç‰¹æ®Šæ–¹æ³•
+//Runnable-->çº¿ç¨‹æ¥å£ï¼Œå®ç°è¯¥æ¥å£ï¼Œå°±å¯ä»¥å®ç°çº¿ç¨‹çš„æ–¹æ³•
 public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
 	Paint paint;
 	Canvas canvas;
-	// ´´½¨Ò»¸öÏß³ÌÆô¶¯»æÍ¼
+	// åˆ›å»ºä¸€ä¸ªçº¿ç¨‹å¯åŠ¨ç»˜å›¾
 	Thread mThread;
-	// SurfaceView¹ÜÀíÕß
+	// SurfaceViewç®¡ç†è€…
 	SurfaceHolder holder;
 
-	// flagÓÃÓÚÅĞ¶ÏÖØ»æÊÇ·ñ¼ÌĞø½øĞĞ
+	// flagç”¨äºåˆ¤æ–­é‡ç»˜æ˜¯å¦ç»§ç»­è¿›è¡Œ
 	boolean flag;
 	byte logicType;
 	float trayRadius;
@@ -44,27 +44,27 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	final byte LOGIC_LEFT = 0x03;
 	final byte LOGIC_RIGHT = 0x04;
 
-	// µ±ÔÚ´úÂëÖĞ´´½¨MySurfaceView¶ÔÏóµÄÊ±ºò£¬»áÊ¹ÓÃ¸Ã¹¹ÔìÆ÷µÄ·½·¨
+	// å½“åœ¨ä»£ç ä¸­åˆ›å»ºMySurfaceViewå¯¹è±¡çš„æ—¶å€™ï¼Œä¼šä½¿ç”¨è¯¥æ„é€ å™¨çš„æ–¹æ³•
 	public MySurfaceView(Context context) {
 		super(context);
-		// ³õÊ¼»¯
+		// åˆå§‹åŒ–
 		init();
 	}
 
-	// ÔÚxml²¼¾ÖÖĞ£¬Èç¹ûÊ¹ÓÃ¸Ã¶ÔÏó²¼¾Ö£¬ÔòÊ¹ÓÃ¸Ã¹¹ÔìÆ÷·½·¨
+	// åœ¨xmlå¸ƒå±€ä¸­ï¼Œå¦‚æœä½¿ç”¨è¯¥å¯¹è±¡å¸ƒå±€ï¼Œåˆ™ä½¿ç”¨è¯¥æ„é€ å™¨æ–¹æ³•
 	public MySurfaceView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
 
-	// ³õÊ¼»¯·½·¨
+	// åˆå§‹åŒ–æ–¹æ³•
 	public void init() {
 		holder = getHolder();
-		// Ìí¼Óµ±Ç°SurfaceViewµÄ×´Ì¬»Øµ÷
+		// æ·»åŠ å½“å‰SurfaceViewçš„çŠ¶æ€å›è°ƒ
 		holder.addCallback(this);
-		// ÔÊĞí±³¾°Í¸Ã÷
+		// å…è®¸èƒŒæ™¯é€æ˜
 		holder.setFormat(PixelFormat.TRANSLUCENT);
-		// ½«Í¼²ãÖÃ¶¥
+		// å°†å›¾å±‚ç½®é¡¶
 		this.setZOrderOnTop(true);
 		paint = new Paint();
 		paint.setAntiAlias(true);
@@ -81,11 +81,11 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		setMeasuredDimension(800, 1080);
 	}
 
-	// »æÍ¼
+	// ç»˜å›¾
 	public void myDraw() {
-		// ´Ó¹ÜÀíÕßholderÖĞ»ñÈ¡»­²¼¶ÔÏó
+		// ä»ç®¡ç†è€…holderä¸­è·å–ç”»å¸ƒå¯¹è±¡
 		canvas = holder.lockCanvas();
-		// Ã¿»­Ò»´Î¾Í¸²¸ÇÉÏÒ»´Î»æÖÆµÄÍ¼Ïñ
+		// æ¯ç”»ä¸€æ¬¡å°±è¦†ç›–ä¸Šä¸€æ¬¡ç»˜åˆ¶çš„å›¾åƒ
 		canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
 		paint.setColor(Color.WHITE);
 		paint.setAlpha(50);
@@ -97,14 +97,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //		canvas.drawArc(oval, 0, 30, true, paint);
 		paint.setColor(Color.BLACK);
 		canvas.drawCircle(rockCenterX, rockCenterY, rockRadius, paint);
-		// Ïò¹ÜÀíÕßholderÌá½»»æÖÆºÃµÄ¶ÔÏó
+		// å‘ç®¡ç†è€…holderæäº¤ç»˜åˆ¶å¥½çš„å¯¹è±¡
 		holder.unlockCanvasAndPost(canvas);
 	}
 
-	// Ê±¼ä¼àÌı
+	// æ—¶é—´ç›‘å¬
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// ¶ÔÊÂ¼ş½øĞĞ·Ö±ğ¼àÌı
+		// å¯¹äº‹ä»¶è¿›è¡Œåˆ†åˆ«ç›‘å¬
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			rockCenterX = baseCenterX;
 			rockCenterY = baseCenterY;
@@ -152,24 +152,24 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		return type;
 	}
 
-	// ·½Ïò¿ØÖÆ
+	// æ–¹å‘æ§åˆ¶
 	public void DirectionMethod(final byte direction) {
-		// ÔÚAndroidÖĞ·¢ËÍsocketĞÅÏ¢£¬ĞèÒªÏß³ÌÆô¶¯
+		// åœ¨Androidä¸­å‘é€socketä¿¡æ¯ï¼Œéœ€è¦çº¿ç¨‹å¯åŠ¨
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
 					// Socket Client
-					// ´´½¨Socket¶ÔÏó£¬²ÎÊıÒ»£ºIPµØÖ·£¨192.168.1.1£©£¬²ÎÊı¶ş£º¶Ë¿ÚºÅ£¨2001£©
+					// åˆ›å»ºSocketå¯¹è±¡ï¼Œå‚æ•°ä¸€ï¼šIPåœ°å€ï¼ˆ192.168.1.1ï¼‰ï¼Œå‚æ•°äºŒï¼šç«¯å£å·ï¼ˆ2001ï¼‰
 					Socket socket = new Socket("192.168.1.1", 2001);
-					// ´´½¨Êä³öÁ÷OutputStream
+					// åˆ›å»ºè¾“å‡ºæµOutputStream
 					OutputStream outputStream = socket.getOutputStream();
-					// ÏòÊä³öÁ÷Ğ´ÈëÊı¾İ
+					// å‘è¾“å‡ºæµå†™å…¥æ•°æ®
 					byte[] command = new byte[] { (byte) 0xff, (byte) 0x00, direction, (byte) 0x00, (byte) 0xff };
 					outputStream.write(command);
-					// ÊÍ·ÅIOÁ÷
+					// é‡Šæ”¾IOæµ
 					outputStream.flush();
-					// ¹Ø±ÕIOÁ÷
+					// å…³é—­IOæµ
 					outputStream.close();
 					socket.close();
 				} catch (UnknownHostException e) {
@@ -181,14 +181,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		}).start();
 	}
 
-	// ÊµÏÖRunnable½Ó¿ÚºóÖØĞ´µÄrun·½·¨£¬´ËÊ±Õû¸öÀà¿ÉÒÔ±»×÷ÎªÒ»¸öÏß³Ì
-	// ThreadÀà±¾ÉíĞèÒªÊµÏÖRunnable½Ó¿Ú
-	// Ïß³Ì£ºÖ´ĞĞºÄÊ±²Ù×÷Ê±¼ä½Ï³¤£¬ÖØ¸´´ÎÊıÌØ±ğ¶à
+	// å®ç°Runnableæ¥å£åé‡å†™çš„runæ–¹æ³•ï¼Œæ­¤æ—¶æ•´ä¸ªç±»å¯ä»¥è¢«ä½œä¸ºä¸€ä¸ªçº¿ç¨‹
+	// Threadç±»æœ¬èº«éœ€è¦å®ç°Runnableæ¥å£
+	// çº¿ç¨‹ï¼šæ‰§è¡Œè€—æ—¶æ“ä½œæ—¶é—´è¾ƒé•¿ï¼Œé‡å¤æ¬¡æ•°ç‰¹åˆ«å¤š
 	@Override
 	public void run() {
 		while (flag) {
 			myDraw();
-			// Ã¿¸ö10ms»æÖÆÒ»´ÎÍ¼Ïñ
+			// æ¯ä¸ª10msç»˜åˆ¶ä¸€æ¬¡å›¾åƒ
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -197,23 +197,23 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		}
 	}
 
-	// µ±SurfaceView±»´´½¨Ê±£¬»áÊ¹ÓÃ¸Ã·½·¨
+	// å½“SurfaceViewè¢«åˆ›å»ºæ—¶ï¼Œä¼šä½¿ç”¨è¯¥æ–¹æ³•
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		flag = true;
-		// Í¨¹ıÏòThreadÖĞ´«ÈëRunnable´´½¨¶ÔÏó
+		// é€šè¿‡å‘Threadä¸­ä¼ å…¥Runnableåˆ›å»ºå¯¹è±¡
 		mThread = new Thread(this);
-		// Æô¶¯Ïß³Ì
+		// å¯åŠ¨çº¿ç¨‹
 		mThread.start();
 	}
 
-	// µ±SurfacViewÒ³ÃæµÄ×´Ì¬·¢Éú¸Ä±äÊ±£¬»áÊ¹ÓÃ¸Ã·½·¨£¨´óĞ¡£¬ĞÎ×´¡­¡­£©
+	// å½“SurfacViewé¡µé¢çš„çŠ¶æ€å‘ç”Ÿæ”¹å˜æ—¶ï¼Œä¼šä½¿ç”¨è¯¥æ–¹æ³•ï¼ˆå¤§å°ï¼Œå½¢çŠ¶â€¦â€¦ï¼‰
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
 	}
 
-	// µ±SurfaceViewÒ³Ãæ±»Ïú»Ù£¨·µ»Ø£©£¬»áÊ¹ÓÃ¸Ã·½·¨
+	// å½“SurfaceViewé¡µé¢è¢«é”€æ¯ï¼ˆè¿”å›ï¼‰ï¼Œä¼šä½¿ç”¨è¯¥æ–¹æ³•
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		flag = false;

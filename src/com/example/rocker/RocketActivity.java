@@ -38,9 +38,9 @@ public class RocketActivity extends Activity {
 				darkModeFlag = field.getInt(layoutParams);
 				Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
 				if (dark) {
-					extraFlagField.invoke(window, darkModeFlag, darkModeFlag);// ×´Ì¬À¸Í¸Ã÷ÇÒºÚÉ«×ÖÌå
+					extraFlagField.invoke(window, darkModeFlag, darkModeFlag);// çŠ¶æ€æ é€æ˜ä¸”é»‘è‰²å­—ä½“
 				} else {
-					extraFlagField.invoke(window, 0, darkModeFlag);// Çå³ıºÚÉ«×ÖÌå
+					extraFlagField.invoke(window, 0, darkModeFlag);// æ¸…é™¤é»‘è‰²å­—ä½“
 				}
 				result = true;
 			} catch (Exception e) {
